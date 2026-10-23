@@ -82,6 +82,7 @@ if [[ -z "$GUIDANCE" ]]; then
   if [[ "$LOSS" == "sds" ]]; then GUIDANCE=25; else GUIDANCE=7.5; fi
 fi
 
+# TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 SAVE_DIR="$SAVE_ROOT/$LOSS"
 mkdir -p "$SAVE_DIR"
 
