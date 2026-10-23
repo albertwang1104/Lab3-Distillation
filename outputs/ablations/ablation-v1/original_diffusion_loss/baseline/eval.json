@@ -1,0 +1,14 @@
+{
+    "source_dir": "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline",
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_burger_on_the_table.png": 0.19921699166297913,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_castle_next_to_a_river.png": 0.2227569818496704,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_red_bus_driving_on_a_desert_road.png": 0.22009487450122833,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_villa_close_to_the_pool.png": 0.1762385070323944,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_car_on_the_road.png": 0.2206169068813324,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/a_cat_sitting_on_a_table.png": 0.16714870929718018,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/a_boat_in_a_river.png": 0.21883009374141693,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_dog_sitting_on_grass.png": 0.1931498944759369,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_cabin_surrounded_by_forests.png": 0.20543602108955383,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/original_diffusion_loss/baseline/A_church_beside_a_lake.png": 0.1670161783695221,
+    "score": 0.19905051589012146
+}

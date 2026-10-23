@@ -1,0 +1,14 @@
+{
+    "source_dir": "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25",
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_burger_on_the_table.png": 0.2891561985015869,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_castle_next_to_a_river.png": 0.3282872140407562,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_red_bus_driving_on_a_desert_road.png": 0.366601824760437,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_villa_close_to_the_pool.png": 0.3000675439834595,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_car_on_the_road.png": 0.2680193781852722,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/a_cat_sitting_on_a_table.png": 0.2615918219089508,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/a_boat_in_a_river.png": 0.2877519726753235,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_dog_sitting_on_grass.png": 0.252236545085907,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_cabin_surrounded_by_forests.png": 0.3199533522129059,
+    "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_update_interval/25/A_church_beside_a_lake.png": 0.34114572405815125,
+    "score": 0.301481157541275
+}

@@ -1,0 +1,57 @@
+{
+  "sweep": "sdi-interval",
+  "value": "500",
+  "device": 0,
+  "parameters": {
+    "loss_type": "sdi",
+    "guidance_scale": "7.5",
+    "steps": "1000",
+    "lr": "0.005",
+    "inversion_n_steps": "10",
+    "inversion_guidance_scale": "-7.5",
+    "inversion_eta": "0.3",
+    "sdi_update_interval": "500"
+  },
+  "prompts_and_seeds": [
+    {
+      "prompt": "A red bus driving on a desert road",
+      "seed": 2024
+    },
+    {
+      "prompt": "a boat in a river",
+      "seed": 2025
+    },
+    {
+      "prompt": "A cabin surrounded by forests",
+      "seed": 2026
+    },
+    {
+      "prompt": "A church beside a lake",
+      "seed": 2027
+    },
+    {
+      "prompt": "A villa close to the pool",
+      "seed": 2028
+    },
+    {
+      "prompt": "A castle next to a river",
+      "seed": 2029
+    },
+    {
+      "prompt": "A burger on the table",
+      "seed": 2030
+    },
+    {
+      "prompt": "A dog sitting on grass",
+      "seed": 2031
+    },
+    {
+      "prompt": "a cat sitting on a table",
+      "seed": 2032
+    },
+    {
+      "prompt": "A car on the road",
+      "seed": 2033
+    }
+  ]
+}

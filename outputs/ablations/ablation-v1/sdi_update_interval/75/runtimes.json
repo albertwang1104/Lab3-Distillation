@@ -1,0 +1,52 @@
+[
+  {
+    "prompt": "A red bus driving on a desert road",
+    "seed": 2024,
+    "seconds": 27.1
+  },
+  {
+    "prompt": "a boat in a river",
+    "seed": 2025,
+    "seconds": 26.76
+  },
+  {
+    "prompt": "A cabin surrounded by forests",
+    "seed": 2026,
+    "seconds": 23.57
+  },
+  {
+    "prompt": "A church beside a lake",
+    "seed": 2027,
+    "seconds": 31.68
+  },
+  {
+    "prompt": "A villa close to the pool",
+    "seed": 2028,
+    "seconds": 34.25
+  },
+  {
+    "prompt": "A castle next to a river",
+    "seed": 2029,
+    "seconds": 33.92
+  },
+  {
+    "prompt": "A burger on the table",
+    "seed": 2030,
+    "seconds": 30.11
+  },
+  {
+    "prompt": "A dog sitting on grass",
+    "seed": 2031,
+    "seconds": 26.73
+  },
+  {
+    "prompt": "a cat sitting on a table",
+    "seed": 2032,
+    "seconds": 27.6
+  },
+  {
+    "prompt": "A car on the road",
+    "seed": 2033,
+    "seconds": 30.67
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "value": "1",
+    "mean_clip_score": 0.20531876534223556
+  },
+  {
+    "value": "3",
+    "mean_clip_score": 0.29813832640647886
+  },
+  {
+    "value": "5",
+    "mean_clip_score": 0.3003767132759094
+  },
+  {
+    "value": "10",
+    "mean_clip_score": 0.301481157541275
+  },
+  {
+    "value": "25",
+    "mean_clip_score": 0.2960441648960114
+  }
+]

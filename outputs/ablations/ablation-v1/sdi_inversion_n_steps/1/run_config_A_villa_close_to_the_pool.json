@@ -1,0 +1,19 @@
+{
+    "prompt": "A villa close to the pool",
+    "negative_prompt": "low quality",
+    "save_dir": "/workspace/WYH/Lab3-Distillation/outputs/ablations/ablation-v1/sdi_inversion_n_steps/1",
+    "loss_type": "sdi",
+    "guidance_scale": 7.5,
+    "steps": 1000,
+    "device": 0,
+    "lr": 0.005,
+    "inversion_n_steps": 1,
+    "inversion_guidance_scale": -7.5,
+    "inversion_eta": 0.3,
+    "sdi_update_interval": 25,
+    "lora_lr": 0.0001,
+    "lora_loss_weight": 1.0,
+    "lora_rank": 4,
+    "log_step": 25,
+    "precision": "fp32"
+}
