@@ -50,6 +50,11 @@ class StableDiffusion(nn.Module):
         # Initialize VSD components if needed
         if args.loss_type == "vsd":
             self._init_vsd_components(args.lora_rank)
+        elif args.loss_type == "diff":
+            # The original loss backpropagates through the frozen UNet.
+            # Checkpoint its activations to reduce the extra GPU memory cost.
+            if hasattr(self.unet, "enable_gradient_checkpointing"):
+                self.unet.enable_gradient_checkpointing()
     
     def _init_vsd_components(self, lora_rank=4):
         """Initialize LoRA for VSD"""
@@ -95,6 +100,25 @@ class StableDiffusion(nn.Module):
         noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_pos - noise_pred_uncond)
         
         return noise_pred
+
+    def get_diffusion_loss(self, latents, text_embeddings):
+        """Original conditional denoising loss (equivalent to CFG scale 1).
+
+        The UNet weights are frozen, but its forward pass remains in the
+        autograd graph so gradients reach the optimized image latents.
+        """
+        batch_size = latents.shape[0]
+        t = torch.randint(
+            self.min_step, self.max_step, (batch_size,),
+            dtype=torch.long, device=self.device,
+        )
+        noise = torch.randn_like(latents)
+        latents_noisy = self.scheduler.add_noise(latents, noise, t)
+        conditional_embeddings = text_embeddings.chunk(2)[1]
+        noise_pred = self.unet(
+            latents_noisy, t, encoder_hidden_states=conditional_embeddings,
+        ).sample
+        return F.mse_loss(noise_pred, noise, reduction="mean")
     
     def get_sds_loss(self, latents, text_embeddings, guidance_scale=7.5):
         """

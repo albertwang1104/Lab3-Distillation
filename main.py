@@ -83,6 +83,11 @@ def run(args):
                 text_embeddings=text_embeddings, 
                 guidance_scale=guidance_scale,
             )
+        elif args.loss_type == "diff":
+            loss = model.get_diffusion_loss(
+                latents=latents,
+                text_embeddings=text_embeddings,
+            )
             
         elif args.loss_type == "sdi":
             loss = model.get_sdi_loss(
@@ -140,7 +145,7 @@ def parse_args():
     parser.add_argument("--negative_prompt", type=str, default="low quality")
     parser.add_argument("--save_dir", type=str, default="./outputs")
     
-    parser.add_argument("--loss_type", type=str, default="sds", choices=["sds", "sdi", "vsd"])
+    parser.add_argument("--loss_type", type=str, default="sds", choices=["sds", "sdi", "vsd", "diff"])
     parser.add_argument("--guidance_scale", type=float, default=7.5)
     parser.add_argument("--steps", type=int, default=500)
 

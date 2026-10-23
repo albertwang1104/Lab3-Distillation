@@ -1,0 +1,43 @@
+\section{Experiments \& Results}
+\label{sec:exp}
+
+We generated one $512\times512$ image for each of ten text prompts with each method. The prompts and per-image scores appear in \cref{tab:clip}. Image--text alignment is measured as cosine similarity between CLIP ViT-B/32 image and text embeddings; higher values indicate stronger correspondence~\cite{radford2021clip}.
+
+\input{Figure/figure_page}
+
+\subsection{Quantitative Results}
+\label{sec:quantitative}
+\input{Table/1_clip}
+
+SDI obtains the highest mean CLIP score, 0.3045, followed by SDS at 0.3004 and VSD at 0.2825. SDI exceeds SDS by 0.0041 on average, while VSD trails SDS by 0.0179. SDS has the highest score on seven individual prompts and SDI on three. SDI's largest gain over SDS is the red-bus prompt (0.3906 versus 0.3150). It also leads for the cat and car prompts. SDS leads on the church, cabin, burger, and four other prompts. VSD is close to SDS for the boat (0.3034 versus 0.3073) but much lower for the cat (0.2153 versus 0.2901).
+
+\subsection{Qualitative Results}
+\label{sec:qualitative}
+
+\Cref{fig:qualitative} shows all 30 generated images. SDS generally captures the requested subject and broad scene layout, but several images are soft: the bus, cabin, and church lack well-defined edges. SDI produces more distinct structure and clearer spatial relationships in several scenes, especially the bus on a desert road, the church beside a lake, and the cat on a table. Its car-on-road image remains a limitation: the road dominates the frame and the cars are small.
+
+VSD retains recognizable subjects in the castle, church, and burger examples, but fine detail is often replaced by dense, fragmented texture. The cat blends into this texture, consistent with its lower CLIP score. VSD's boat score is close to SDS's, yet its image has a busier and less stable surface. This illustrates why CLIP should be interpreted alongside the images.
+
+\subsection{Ablation Study}
+\label{sec:ablation}
+\input{Table/2_ablation}
+
+Five settings were specified for each of three parameter sweeps. These comparisons have not yet been measured, so \cref{tab:ablation} and \cref{fig:abl_sds_gs,fig:abl_sdi_steps,fig:abl_sdi_interval} indicate missing results rather than estimated trends.
+
+\subsubsection{SDS: \texttt{guidance\_scale}}
+\label{sec:abl_sds_gs}
+Guidance scale controls the strength of text conditioning. The available SDS images use a scale of 25; without the other settings, the best scale and its effect on image quality cannot be determined.
+
+\subsubsection{SDI: \texttt{inversion\_n\_steps}}
+\label{sec:abl_sdi_steps}
+The available SDI images use ten inversion steps. More steps require more UNet evaluations, but their effect on this experiment's image quality and runtime has not been measured.
+
+\subsubsection{SDI: \texttt{sdi\_update\_interval}}
+\label{sec:abl_sdi_interval}
+The available SDI images refresh the target every 25 iterations. A shorter interval would refresh the target more often, while a longer interval would reuse it longer; their empirical effects remain undetermined.
+
+\subsection{Hyperparameters}
+\label{sec:hparams}
+\input{Table/3_hparams}
+
+\Cref{tab:hparams} lists the method-specific settings. All runs use full precision, a negative prompt of \emph{low quality}, and one $1\times4\times64\times64$ optimized latent. The three methods use different guidance constructions and, in VSD, an additional LoRA optimizer group; their scores therefore describe the tested configurations rather than a fully controlled comparison of all implementation choices.

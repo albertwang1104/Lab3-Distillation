@@ -1,0 +1,120 @@
+\section{Methodology}
+\label{sec:method}
+
+Each run optimizes one latent image $x_0\in\mathbb{R}^{1\times4\times64\times64}$, initialized with Gaussian noise and decoded to a $512\times512$ image by the Stable Diffusion 2.1-base variational autoencoder (VAE)~\cite{rombach2022ldm}. Let $c$ denote the text condition and $\hat\epsilon_\theta(x_t,t,c)$ the pretrained denoising UNet's noise prediction. The scheduler provides the cumulative noise coefficient $\bar\alpha_t$~\cite{ho2020ddpm,song2021ddim}. Conditional and unconditional predictions are combined with classifier-free guidance (CFG)~\cite{ho2022cfg}. SDS and VSD sample a timestep uniformly from 20 through 979 and form
+\begin{equation}
+x_t=\sqrt{\bar\alpha_t}\,x_0+\sqrt{1-\bar\alpha_t}\,\epsilon,
+\qquad \epsilon\sim\mathcal N(0,I).
+\end{equation}
+In all three methods, a detached target is used in a surrogate squared-error loss. This sends the intended guidance to $x_0$ while avoiding differentiation through the frozen UNet.
+
+\subsection{Score Distillation Sampling (SDS)}
+\label{sec:sds}
+
+\noindent\textbf{Concept.} SDS compares the UNet's prediction for $x_t$ with the same random noise $\epsilon$ used to construct $x_t$~\cite{poole2023dreamfusion}. In our implementation the guidance vector is
+\begin{equation}
+g_{\rm SDS}=(1-\bar\alpha_t)
+  \bigl(\hat\epsilon_\theta(x_t,t,c)-\epsilon\bigr).
+\end{equation}
+The UNet prediction is computed without gradients. The target $\operatorname{stopgrad}(x_0-g_{\rm SDS})$ is then used in a half-squared-error loss, so its derivative with respect to $x_0$ equals $g_{\rm SDS}$. A newly sampled timestep and noise are used at every update. This makes each step inexpensive but also changes the reference at every step.
+
+\noindent\textbf{Implementation.} The central operations in \texttt{get\_sds\_loss()} are:
+\begin{lstlisting}
+noise = torch.randn_like(latents)
+latents_noisy = self.scheduler.add_noise(
+    latents, noise, t)
+with torch.no_grad():
+    noise_pred = self.get_noise_preds(
+        latents_noisy, t, text_embeddings,
+        guidance_scale)
+w = (1 - self.alphas[t]).view(-1, 1, 1, 1)
+grad = w * (noise_pred - noise)
+target = (latents - grad).detach()
+loss = 0.5 * F.mse_loss(
+    latents, target, reduction="sum") / batch_size
+\end{lstlisting}
+
+\subsection{Variational Score Distillation (VSD)}
+\label{sec:vsd}
+
+\noindent\textbf{Concept.} VSD uses a learned noise prediction as its reference rather than the sampled noise itself~\cite{wang2023prolificdreamer}. We attach a rank-4 low-rank adaptation (LoRA) adapter~\cite{hu2022lora} to the UNet attention projections. With the adapter disabled, the frozen model provides the pretrained score; with the adapter enabled, the LoRA model predicts noise for the current optimized latent. The two predictions define
+\begin{equation}
+g_{\rm VSD}=(1-\bar\alpha_t)
+  \bigl(\hat\epsilon_\theta(x_t,t,c)
+        -\hat\epsilon_{\rm LoRA}(x_t,t,c)\bigr).
+\end{equation}
+The LoRA adapter is trained with denoising mean-squared error against the sampled noise. Its input is detached from $x_0$, so this denoising loss updates the adapter rather than the image latent. Conversely, the LoRA prediction is detached when forming the latent's surrogate target. One optimizer updates the latent and adapter with separate learning rates; the LoRA loss receives weight 1.2 in the evaluated run.
+
+\noindent\textbf{Implementation.} The teacher prediction, LoRA training loss, and latent guidance are separated as follows:
+\begin{lstlisting}
+with torch.no_grad():
+    self.unet.disable_adapters()
+    teacher = self.get_noise_preds(
+        latents_noisy, t, text_embeddings,
+        guidance_scale)
+self.unet.enable_adapters()
+student_raw = self.unet(
+    torch.cat([latents_noisy.detach()] * 2),
+    torch.cat([t] * 2),
+    encoder_hidden_states=text_embeddings).sample
+lora_loss = F.mse_loss(
+    student_raw, torch.cat([noise] * 2))
+student_u, student_c = student_raw.chunk(2)
+student = (student_u + guidance_scale *
+           (student_c - student_u)).detach()
+grad = (1 - self.alphas[t]).view(-1, 1, 1, 1) \
+       * (teacher - student)
+\end{lstlisting}
+
+\subsection{Score Distillation via Inversion (SDI)}
+\label{sec:sdi}
+
+\noindent\textbf{Concept.} SDI obtains $x_t$ by inverting the current latent with Denoising Diffusion Implicit Models (DDIM) rather than adding independent random noise~\cite{lukoianov2024sdi,song2021ddim}. We implement ten inversion steps from $t=0$ to the selected timestep. At each step, the UNet predicts noise with CFG scale $-7.5$; the prediction estimates a clean latent, which is then advanced to the next timestep using the DDIM relation. The final noisy latent is denoised once with CFG scale 7.5 to obtain a target $\hat x_0$. The optimization loss is a half-squared error between the current $x_0$ and the detached $\hat x_0$.
+
+The selected timestep decreases linearly from about 980 toward 20 over the 500 optimization iterations. The target is refreshed every 25 iterations and reused between refreshes. The configuration records an inversion stochasticity parameter of 0.3, but the implemented inversion is deterministic and does not use that parameter.
+
+\noindent\textbf{Implementation.} The inversion loop explicitly advances between selected timesteps:
+\begin{lstlisting}
+timesteps = torch.linspace(
+    0, target_t, n_steps + 1, device=self.device)
+xt = latents.clone()
+for i in range(n_steps):
+    t_curr = int(timesteps[i])
+    t_next = int(timesteps[i + 1])
+    t_input = torch.full(
+        (latents.shape[0],), t_curr,
+        device=self.device, dtype=self.dtype)
+    eps = self.get_noise_preds(
+        xt, t_input, text_embeddings,
+        guidance_scale)
+    a = (self.alphas[t_curr] if t_curr > 0 else
+         torch.tensor(1.0, device=self.device))
+    b = self.alphas[t_next]
+    x0_hat = (xt - torch.sqrt(1-a)*eps) / torch.sqrt(a)
+    xt = torch.sqrt(b)*x0_hat + torch.sqrt(1-b)*eps
+\end{lstlisting}
+
+The annealed timestep and cached target are handled by \texttt{get\_sdi\_loss()}:
+\begin{lstlisting}
+progress = current_iter / total_iters
+t = int(self.max_step -
+        progress * (self.max_step - self.min_step))
+if current_iter % update_interval == 0 \
+        or not hasattr(self, "sdi_target"):
+    with torch.no_grad():
+        noisy = self.invert_noise(
+            latents, t, text_embeddings,
+            inversion_guidance_scale,
+            inversion_n_steps, inversion_eta)
+        t_tensor = torch.full(
+            (B,), t, device=self.device, dtype=torch.long)
+        eps = self.get_noise_preds(
+            noisy, t_tensor, text_embeddings,
+            guidance_scale)
+        a = self.alphas[t]
+        target = (noisy - torch.sqrt(1-a)*eps) \
+                 / torch.sqrt(a)
+        self.sdi_target = target.detach()
+loss = 0.5 * F.mse_loss(
+    latents, self.sdi_target, reduction="sum") / B
+\end{lstlisting}

@@ -1,0 +1,25 @@
+\begin{table}[t]
+  \centering
+  \footnotesize
+  \caption{\textbf{Hyperparameters} for SDS, VSD, and SDI. A dash denotes an inactive option.}
+  \label{tab:hparams}
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    Hyperparameter & SDS & VSD & SDI \\
+    \midrule
+    \texttt{guidance\_scale} & 25 & 7.5 & 7.5 \\
+    \texttt{lr} & 0.01 & 0.01 & 0.01 \\
+    \texttt{steps} & 500 & 500 & 500 \\
+    \midrule
+    \texttt{lora\_lr} & -- & $10^{-4}$ & -- \\
+    \texttt{lora\_rank} & -- & 4 & -- \\
+    \texttt{lora\_loss\_weight} & -- & 1.2 & -- \\
+    \midrule
+    \texttt{inversion\_n\_steps} & -- & -- & 10 \\
+    \texttt{inversion\_guidance\_scale} & -- & -- & $-7.5$ \\
+    \texttt{inversion\_eta} & -- & -- & 0.3* \\
+    \texttt{sdi\_update\_interval} & -- & -- & 25 \\
+    \bottomrule
+  \end{tabular}
+  \par\smallskip\raggedright *The current inversion implementation is deterministic; this recorded value does not affect the results.
+\end{table}

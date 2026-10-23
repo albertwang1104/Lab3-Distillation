@@ -1,0 +1,22 @@
+\begin{table}[t]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \caption{\textbf{Ablation study.} Values show the planned settings; dashes indicate that no CLIP score has been measured.}
+  \label{tab:ablation}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    \multicolumn{6}{@{}l}{\textit{(a) SDS: \texttt{guidance\_scale}}} \\
+    Value & 7.5 & 15 & 25 & 50 & 100 \\
+    CLIP & -- & -- & -- & -- & -- \\
+    \midrule
+    \multicolumn{6}{@{}l}{\textit{(b) SDI: \texttt{inversion\_n\_steps}}} \\
+    Value & 1 & 3 & 5 & 10 & 25 \\
+    CLIP & -- & -- & -- & -- & -- \\
+    \midrule
+    \multicolumn{6}{@{}l}{\textit{(c) SDI: \texttt{sdi\_update\_interval}}} \\
+    Value & 25 & 75 & 200 & 500 & 1000 \\
+    CLIP & -- & -- & -- & -- & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}

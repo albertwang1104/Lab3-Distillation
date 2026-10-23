@@ -1,0 +1,16 @@
+%% Figure page: Figs. 2-6 share one float page ([p]), so that page holds no body text (only captions).
+%% The block is exactly \textheight tall (cvpr.sty only accepts nearly full float pages); \vfill spreads the rows.
+%% If the figures outgrow one page (Overfull \vbox), split them into a second figure*[p].
+\begin{figure*}[p]
+  \captionsetup{justification=raggedright}  % multi-line captions ragged; one-line captions stay centered
+  \begin{minipage}[t][\textheight][s]{\textwidth}
+    \input{Figure/2_qualitative}
+    \vfill
+    \begin{minipage}[t]{.48\textwidth}\input{Figure/3_abl_guidance_scale}\end{minipage}\hfill
+    \begin{minipage}[t]{.48\textwidth}\input{Figure/4_abl_inversion_n_steps}\end{minipage}
+    \vfill
+    \begin{minipage}[t]{.48\textwidth}\input{Figure/5_abl_update_interval}\end{minipage}\hfill
+    \begin{minipage}[t]{.48\textwidth}\input{Figure/6_diff_loss}\end{minipage}
+    \par\kern0pt  % keeps the last row's depth inside the page-high box
+  \end{minipage}
+\end{figure*}

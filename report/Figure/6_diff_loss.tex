@@ -1,0 +1,17 @@
+  \centering
+  \setlength{\tabcolsep}{1pt}
+  \renewcommand{\arraystretch}{0.6}
+  % 2 rows of 1.5\ablcell = as tall as the 3-row ablation grids
+  \begin{tabular}{@{}m{1em}*{3}{C{1.5\ablcell}}@{}}
+    & \tiny A dog sitting on grass & \tiny A castle next to a river & \tiny A car on the road \\
+    \rotatebox{90}{\scriptsize Diff.\ loss}
+      & \img{Figure/diff_loss/A_dog_sitting_on_grass.png}
+      & \img{Figure/diff_loss/A_castle_next_to_a_river.png}
+      & \img{Figure/diff_loss/A_car_on_the_road.png} \\
+    \rotatebox{90}{\scriptsize SDS}
+      & \img{photos/sds/A_dog_sitting_on_grass.png}
+      & \img{photos/sds/A_castle_next_to_a_river.png}
+      & \img{photos/sds/A_car_on_the_road.png} \\
+  \end{tabular}
+  \caption{\textbf{Original diffusion loss} (top, not measured) versus SDS (bottom).}
+  \label{fig:diff_loss}

@@ -1,0 +1,20 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Direct Denoising Loss versus Score Guidance}
+\label{sec:diff_loss}
+
+A diffusion model is trained to predict the noise that was added to a clean image. Its standard denoising objective is
+\begin{equation}
+\mathcal L_{\rm Diff}=\|\hat\epsilon_\theta(x_t,t,c)-\epsilon\|_2^2.
+\end{equation}
+That objective is suitable for learning the UNet's parameters from real images. If the UNet is frozen and the image latent is optimized instead, the gradient passes through the UNet and follows whatever image change reduces prediction error. Such a change need not move the image toward a natural image; it may exploit the network's local sensitivities. SDS uses a detached target to apply a score-difference direction without that full UNet Jacobian. This explains the different optimization mechanisms, although a direct denoising-loss baseline was not measured in this study.
+
+\subsection{Interpreting the Three Methods}
+\label{sec:why_better}
+
+\noindent\textbf{SDS.} New random noise and a new timestep provide a fresh guidance estimate on every update. This simple procedure gives good prompt alignment in the present results, winning seven of ten individual prompts. Several images nonetheless appear blurred, which is consistent with updates guided by changing noisy references.
+
+\noindent\textbf{VSD.} The LoRA prediction estimates the noise associated with the evolving optimized latent. In principle, this adaptive reference can reduce the mismatch between a fixed diffusion prior and the current image distribution. In our results, however, VSD averages 0.2825, below SDS's 0.3004, and its images often contain fragmented high-frequency texture. The cat result is the clearest failure. The observed gap should be described as an outcome of this configuration, not as evidence that an adaptive reference is always worse; one run per prompt cannot establish that broader claim.
+
+\noindent\textbf{SDI.} Inversion produces a noisy latent connected to the current image, while the cached denoised target gives several successive updates a consistent direction. This helps explain why many SDI images have cleaner structure than their SDS counterparts. SDI has the highest mean CLIP score, 0.3045, but its margin over SDS is small and SDS still wins seven prompts. The evidence supports a modest average advantage for SDI in this experiment rather than uniform superiority.

@@ -1,0 +1,6 @@
+\section{Introduction}
+\label{sec:intro}
+
+Text-to-image diffusion models normally generate an image by gradually denoising a random sample. Score distillation instead treats the image latent as an optimization variable and uses a pretrained diffusion model to guide its updates. This study compares three forms of that guidance: Score Distillation Sampling (SDS)~\cite{poole2023dreamfusion}, Variational Score Distillation (VSD)~\cite{wang2023prolificdreamer}, and Score Distillation via Inversion (SDI)~\cite{lukoianov2024sdi}.
+
+We implemented the three methods with Stable Diffusion 2.1-base, generated images for ten text prompts, and evaluated their correspondence to the prompts using the ViT-B/32 variant of Contrastive Language--Image Pretraining (CLIP)~\cite{radford2021clip}. Quantitative scores and visual comparisons are considered together because image--text similarity alone does not fully describe image quality.

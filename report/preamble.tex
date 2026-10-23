@@ -1,0 +1,94 @@
+%% This file contains a number of tweaks that are typically applied to the main document.
+%% They are not enabled by default, but can be enabled by uncommenting the relevant lines.
+
+%%
+%% Inline annotations; for predefined colors, refer to "dvipsnames" in the xcolor package:
+%% https://tinyurl.com/overleaf-colors
+%%
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\TODO}[1]{{\color{gray}#1}}  % gray hint: what to write here
+%%
+%% disable for camera ready / submission by uncommenting these lines  
+%%
+% \renewcommand{\TODO}[1]{}
+% \renewcommand{\todo}[1]{#1}
+
+%%
+%% work harder in optimizing text layout. Typically shrinks text by 1/6 of page, enable
+%% it at the very end of the writing process, when you are just above the page limit
+%%
+% \usepackage{microtype}
+
+%%
+%% fine-tune paragraph spacing
+%%
+% \renewcommand{\paragraph}[1]{\vspace{.5em}\noindent\textbf{#1.}}
+
+%%
+%% globally adjusts space between figure and caption
+%%
+% \setlength{\abovecaptionskip}{.5em}
+
+
+%%
+%% Allows "the use of \paper to refer to the project name"
+%% with automatic management of space at the end of the word
+%%
+% \usepackage{xspace}
+% \newcommand{\paper}{ProjectName\xspace}
+
+%%
+%% Commonly used math definitions
+%%
+% \DeclareMathOperator*{\argmin}{arg\,min}
+% \DeclareMathOperator*{\argmax}{arg\,max}
+
+%%
+%% Tigthen underline
+%%
+% \usepackage{soul}
+% \setuldepth{foobar}
+
+%%
+%% Lab3 additions
+%%
+\usepackage{array}   % m{} columns: vertically centered image grids
+\usepackage{listings}
+\lstset{language=Python, basicstyle=\ttfamily\scriptsize, columns=fullflexible,
+        breaklines=true, frame=single, keywordstyle=\color{NavyBlue}\bfseries,
+        commentstyle=\color{gray}, showstringspaces=false}
+
+%% \img[width]{path}: include an image, or show an explicit unmeasured cell.
+\newcommand{\img}[2][\linewidth]{%
+  \IfFileExists{#2}{\includegraphics[width=#1]{#2}}{%
+    \raisebox{\depth}{\fbox{%
+      \parbox[c][\dimexpr#1-2\fboxsep-2\fboxrule][c]{\dimexpr#1-2\fboxsep-2\fboxrule}{%
+        \centering\scriptsize Not measured%
+      }%
+    }}%
+  }%
+}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+
+%% The report has its own copies of all evaluated images in photos/.
+%% \resrow{method dir}{row label}: one row with all 10 evaluation prompts
+\newcommand{\resrow}[2]{\rotatebox{90}{\scriptsize #2}
+  & \img{photos/#1/A_red_bus_driving_on_a_desert_road.png} & \img{photos/#1/a_boat_in_a_river.png}
+  & \img{photos/#1/A_cabin_surrounded_by_forests.png}      & \img{photos/#1/A_church_beside_a_lake.png}
+  & \img{photos/#1/A_villa_close_to_the_pool.png}          & \img{photos/#1/A_castle_next_to_a_river.png}
+  & \img{photos/#1/A_burger_on_the_table.png}              & \img{photos/#1/A_dog_sitting_on_grass.png}
+  & \img{photos/#1/a_cat_sitting_on_a_table.png}           & \img{photos/#1/A_car_on_the_road.png} \\}
+
+%% \ablpanel{setting}{5 values}: value labels on top, then 3 labeled prompts (rows) x 5 values (columns)
+%% \ablcell: ablation image size; Fig. 6 uses 1.5\ablcell, so its 2 rows are as tall as the 3 ablation rows
+\newlength{\ablcell}\setlength{\ablcell}{.087\textwidth}
+\newcommand{\ablrow}[8]{\rotatebox{90}{\scriptsize #3} & \img{Figure/ablation/#1/#4/#2.png} & \img{Figure/ablation/#1/#5/#2.png}
+  & \img{Figure/ablation/#1/#6/#2.png} & \img{Figure/ablation/#1/#7/#2.png} & \img{Figure/ablation/#1/#8/#2.png} \\}
+\newcommand{\ablpanel}[6]{%
+  \begin{tabular}{@{}m{1em}*{5}{C{\ablcell}}@{}}
+    & \scriptsize #2 & \scriptsize #3 & \scriptsize #4 & \scriptsize #5 & \scriptsize #6 \\
+    \ablrow{#1}{A_burger_on_the_table}{Burger}{#2}{#3}{#4}{#5}{#6}
+    \ablrow{#1}{a_cat_sitting_on_a_table}{Cat}{#2}{#3}{#4}{#5}{#6}
+    \ablrow{#1}{A_villa_close_to_the_pool}{Villa}{#2}{#3}{#4}{#5}{#6}
+  \end{tabular}}
