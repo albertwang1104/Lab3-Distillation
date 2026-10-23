@@ -3,7 +3,7 @@
     "negative_prompt": "low quality",
     "save_dir": "./outputs/vsd",
     "loss_type": "vsd",
-    "guidance_scale": 12.5,
+    "guidance_scale": 7.5,
     "steps": 500,
     "device": 0,
     "lr": 0.01,
@@ -12,7 +12,7 @@
     "inversion_eta": 0.3,
     "sdi_update_interval": 25,
     "lora_lr": 0.0001,
-    "lora_loss_weight": 1.0,
+    "lora_loss_weight": 1.2,
     "lora_rank": 4,
     "log_step": 25,
     "precision": "fp32"

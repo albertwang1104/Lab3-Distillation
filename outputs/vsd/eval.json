@@ -1,14 +1,14 @@
 {
     "source_dir": "./outputs/vsd",
-    "./outputs/vsd/A_burger_on_the_table.png": 0.2581683397293091,
-    "./outputs/vsd/A_castle_next_to_a_river.png": 0.28219926357269287,
-    "./outputs/vsd/A_red_bus_driving_on_a_desert_road.png": 0.2781904339790344,
-    "./outputs/vsd/A_villa_close_to_the_pool.png": 0.25910189747810364,
-    "./outputs/vsd/A_car_on_the_road.png": 0.24589203298091888,
-    "./outputs/vsd/a_cat_sitting_on_a_table.png": 0.15994998812675476,
-    "./outputs/vsd/a_boat_in_a_river.png": 0.29150670766830444,
-    "./outputs/vsd/A_dog_sitting_on_grass.png": 0.2816425561904907,
-    "./outputs/vsd/A_cabin_surrounded_by_forests.png": 0.3202827572822571,
-    "./outputs/vsd/A_church_beside_a_lake.png": 0.2989580035209656,
-    "score": 0.26758919805288317
+    "./outputs/vsd/A_burger_on_the_table.png": 0.27769818902015686,
+    "./outputs/vsd/A_castle_next_to_a_river.png": 0.2907974123954773,
+    "./outputs/vsd/A_red_bus_driving_on_a_desert_road.png": 0.3017415404319763,
+    "./outputs/vsd/A_villa_close_to_the_pool.png": 0.26381009817123413,
+    "./outputs/vsd/A_car_on_the_road.png": 0.2778235077857971,
+    "./outputs/vsd/a_cat_sitting_on_a_table.png": 0.21525469422340393,
+    "./outputs/vsd/a_boat_in_a_river.png": 0.303445965051651,
+    "./outputs/vsd/A_dog_sitting_on_grass.png": 0.2757209539413452,
+    "./outputs/vsd/A_cabin_surrounded_by_forests.png": 0.3091154992580414,
+    "./outputs/vsd/A_church_beside_a_lake.png": 0.3098967969417572,
+    "score": 0.28253046572208407
 }
